@@ -7,12 +7,13 @@ class UsersController < ApplicationController
     def create
         @user = User.new(form_params)
 
-        if @user.save
-            redirect_to root_path
+        if @user.save_and_subscribe
 
             session[:user_id] = @user.id
 
             flash[:success] = "Thanks for signing up!"
+
+            redirect_to root_path
         else
             render "new"
         end
@@ -20,7 +21,7 @@ class UsersController < ApplicationController
 
     def form_params
         params.require(:user).permit(:name, :username, :email, 
-        :password, :password_confirmation)
+        :password, :password_confirmation, :subscription_plan, :stripe_token)
     end
 
 end

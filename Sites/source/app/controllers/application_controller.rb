@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
     #run before every action
     before_action :current_user
 
+
     def current_user
         if is_logged_in?
             @current_user = User.find(session[:user_id])
@@ -19,5 +20,12 @@ class ApplicationController < ActionController::Base
 
     def is_logged_in?
         session[:user_id].present?
+    end
+
+    def force_login 
+        unless is_logged_in?
+            flash[:error] = "You are not logged in"
+            redirect_to root_path
+        end
     end
 end

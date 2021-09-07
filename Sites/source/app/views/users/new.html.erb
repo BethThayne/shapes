@@ -7,6 +7,47 @@
 <%= f.input :email %>
 <%= f.input :password %>
 <%= f.input :password_confirmation %>
+
+<%= f.input :subscription_plan, as: :select, collection:[['Basic subscription - $9.99/mo', 'price_1JCNw2LzZFXpG8fpmRCTn3gO'], ['Pro subscription - $19.99/mo', 'price_1JCNwILzZFXpG8fpfxwvkfvT']], include_blank: false %>
+
+
+<div id="card-errors">
+    <% @user.errors[:stripe_token].each do |e| %>
+        <%= e %>
+    <% end %>
+</div>
+
+<div id="card"></div>
+
 <%= f.button :submit %>
 
+
+
 <% end %>
+
+<script>
+
+var stripe = Stripe("<%= Rails.application.credentials.stripe[:stripe_key] %>")
+var elements = stripe.elements()
+
+
+var card = elements.create('card')
+card.mount('#card')
+
+$("form#new_user").on("submit", function (ev) {
+    ev.preventDefault()
+
+    stripe.createToken(card).then(function (result) {
+        if (result.error) {
+            $("#card-errors").html(result.error.message)
+
+        } else {
+            $("form#new_user").append("<input type='hidden' name='user[stripe_token]' value='" + result.token.id + "'>")
+            $("form#new_user").get(0).submit()
+
+        }
+    })
+})
+
+
+</script>

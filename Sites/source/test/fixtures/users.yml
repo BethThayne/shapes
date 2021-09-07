@@ -1,13 +1,21 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  username: MyString
-  email: MyString
-  password_digest: MyString
+beth: 
+  name: Beth
+  username: beth
+  email: bethmthayne@gmail.com
+  password_digest: <%= BCrypt::Password.create("password123") %>
+  stripe_token: tok_visa
+  subscription_plan: price_1JCNw2LzZFXpG8fpmRCTn3gO
 
-two:
-  name: MyString
-  username: MyString
-  email: MyString
-  password_digest: MyString
+
+bethtest: 
+  name: Beth
+  username: bethtest
+  email: beth@gmail.com
+  password_digest: password123
+  stripe_token: tok_chargeDeclined
+  subscription_plan: price_1JCNw2LzZFXpG8fpmRCTn3gO
+
+  
+  
